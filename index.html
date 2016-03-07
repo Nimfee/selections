@@ -1,30 +1,1500 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="stylesheet" type="text/css" href="css/app.css"/>
+<html><head><script type="text/javascript" async="" src="https://mc.yandex.ru/metrika/watch.js"></script><script async="" src="//www.google-analytics.com/analytics.js"></script>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=1024" name="viewport">
+
+
+
+    <title>Захвати и визуализируй! Или гистограмма с микрофона средствами Web Audio API / Блог компании DevExpress / Хабрахабр</title>
+
+    <meta name="description" content="
+
+Я очень люблю «живые» графики. Смертельная скука — смотреть на статичные картинки с цифрами. Мне хочется, чтобы график завораживал, чтобы заставлял человека, который смотрит на него,...">
+
+    <meta name="keywords" content="devexpress, devextreme, js, webapi">
+
+    <meta property="fb:app_id" content="444736788986613">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://habrahabr.ru/company/devexpress/blog/278823/">
+    <meta property="og:title" content="Захвати и визуализируй! Или гистограмма с микрофона средствами Web Audio API">
+    <meta property="og:image" content="https://habrastorage.org/files/eef/117/880/eef117880c804c1784d09ea8728433d5.png">
+    <link rel="image_src" href="https://habrastorage.org/files/eef/117/880/eef117880c804c1784d09ea8728433d5.png"><meta property="og:image" content="https://habrastorage.org/files/f67/831/f71/f67831f718174b94b6eff4f1703317ff.jpg">
+    <link rel="image_src" href="https://habrastorage.org/files/f67/831/f71/f67831f718174b94b6eff4f1703317ff.jpg"><meta property="og:image" content="https://habrastorage.org/files/0fc/87e/a62/0fc87ea62e384cada0e23ce98fa93eac.jpg">
+    <link rel="image_src" href="https://habrastorage.org/files/0fc/87e/a62/0fc87ea62e384cada0e23ce98fa93eac.jpg"><meta property="og:image" content="https://habrastorage.org/files/a65/d7e/496/a65d7e4965a942de9bccccb4632825b2.jpg">
+    <link rel="image_src" href="https://habrastorage.org/files/a65/d7e/496/a65d7e4965a942de9bccccb4632825b2.jpg"><meta property="og:image" content="https://habrastorage.org/files/7d4/aee/3c0/7d4aee3c010444ec911b9abbb6219a48.png">
+    <link rel="image_src" href="https://habrastorage.org/files/7d4/aee/3c0/7d4aee3c010444ec911b9abbb6219a48.png"><meta property="og:image" content="https://habrastorage.org/files/81e/476/502/81e476502536411fb09df7d8a0c1951b.gif">
+    <link rel="image_src" href="https://habrastorage.org/files/81e/476/502/81e476502536411fb09df7d8a0c1951b.gif">
+
+    <meta property="og:description" content="Я очень люблю «живые» графики. Смертельная скука — смотреть на статичные картинки с цифрами. Мне хочется, чтобы график завораживал, чтобы заставлял человека,...">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@habrahabr">
+    <meta property="al:android:url" content="habrahabr://post/278823">
+    <meta property="al:android:app_name" content="Habrahabr">
+    <meta property="al:android:package" content="ru.habrahabr">
+    <meta property="al:windows_phone:url" content="habrahabr://post/278823">
+    <meta property="al:windows_phone:app_name" content="Habrahabr">
+    <meta property="al:windows_phone:app_id" content="460a6bd6-8955-470f-935e-9ea1726a6060">
+    <link rel="canonical" href="https://habrahabr.ru/company/devexpress/blog/278823/">
+    <link rel="alternate" media="only screen and (max-width: 640px)" href="https://m.habrahabr.ru/company/devexpress/blog/278823/">
+
+
+
+    <link href="//habracdn.net/habr/styles/1457521131/_build/company_post_show_common.css" rel="stylesheet" media="all">
+
+    <link href="//habracdn.net/habr/styles/1457521131/_build/global_main.css" rel="stylesheet" media="all">
+
+    <script type="text/javascript" src="//habracdn.net/habr/javascripts/1457521131/assets/global_main.js"></script>
+    <script type="text/javascript" src="//habracdn.net/habr/javascripts/1457521131/assets/company_post_show_common.js"></script>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
-</head>
+    <link rel="stylesheet" type="text/css" href="css/app.css"/>
+
+
+
+
+
+    <meta name="yandex-verification" content="67d46b975fa41645">
+
+    <meta content="Хабрахабр" name="apple-mobile-web-app-title">
+
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+    <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+    <meta name="application-name" content="Хабрахабр">
+    <meta name="msapplication-TileColor" content="#FFFFFF">
+    <meta name="msapplication-TileImage" content="mstile-144x144.png">
+
+
+    <script>
+        var N = 5;
+        var ar_duo1 = Math.floor(Math.random()*N+1);
+    </script>
+    <script type="text/javascript" src="//habracdn.net/habr/javascripts/1457521131/adriver.js"></script>
+
+    <link title="Хабрахабр / Блог компании DevExpress / Комментарии к публикации «Захвати и визуализируй! Или гистограмма с микрофона средствами Web Audio API»" type="application/rss+xml" rel="alternate" href="https://habrahabr.ru/rss/post/278823/">
+
+    <script src="//habracdn.net/habr/javascripts/1457521131/_parts/advertising.js"></script>
+
+    <script type="text/javascript">
+
+        if (typeof adriver == 'undefined')
+        {
+            var adb1 = 'yes';
+        }
+
+        var user_type = "guest";
+
+        var page_type = "publish_corp";
+
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-726094-1',  'auto');
+        ga('create', 'UA-726094-24', 'auto', {'name': 'HGM'});
+
+        ga('require', 'displayfeatures');
+        ga('set', 'dimension1', user_type); // user type - guest/readonly/habrauser
+
+
+        ga('set', 'dimension4', adb1);
+
+        ga('set', 'dimension5', page_type);
+
+
+        if(typeof removeUtms === 'undefined') {
+            removeUtms = function(){};
+        }
+
+        ga('HGM.set', 'dimension1', user_type);
+        ga('HGM.set', 'dimension2', "habrahabr");
+        ga('HGM.send', 'pageview');
+
+        ga('send', 'pageview', { 'hitCallback': removeUtms });
+
+
+    </script>
+
+
+    <script>
+        var adcm_config ={
+            id:1034,
+            platformId: 34,
+
+            tags: ['hub_sound_and_music', 'hub_programming', 'hub_data_visualization', 'hub_javascript', 'g_audio_and_music_software', 'g_programming', 'g_data_management', 'g_scripting_languages'],
+            init: function () {
+                window.adcm.call();
+            }
+        };
+    </script>
+    <script src="https://tag.digitaltarget.ru/adcm.js" async=""></script>
+    <script src="https://tag.digitaltarget.ru/processor.js?i=331522555806520"></script></head>
 
 <body>
-<div class="jumbotron">
-    <div class="container for_selection">
-        <h1>Hello, world!</h1>
-        <p><a>Hello</a></p>
-        <p>This is a template fora simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique. </p>
-        <p>Serbian (Serbian Cyrillic: српски, Gaj's Latin: srpski, pronounced [sr̩̂pskiː]) is the standardized variety of the Serbo-Croatian language[9][10][11] used chiefly by Serbs in Serbia, Montenegro,[12] and Bosnia and Herzegovina. In addition, it is a recognized minority language in Croatia, Macedonia, Romania, Hungary, Slovakia, and the Czech Republic.
+<div class="layout_inner">
+    <div id="TMpanel">
+        <div class="container">
+            <div class="bmenu">
+                <a href="https://tmfeed.ru?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo">TM Feed</a>
+                <a href="https://habrahabr.ru?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo" class="current">Хабрахабр</a>
+                <a href="https://megamozg.ru?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo">Мегамозг</a>
+                <a href="https://geektimes.ru?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo">Geektimes</a>
+                <a href="https://toster.ru?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo">Тостер</a>
+                <a href="https://moikrug.ru?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo">Мой круг</a>
+                <a href="https://freelansim.ru?utm_source=habrahabr&amp;utm_medium=referral&amp;utm_campaign=mainpage&amp;utm_content=head_link">Фрилансим</a>
+            </div>
+        </div>
+    </div>
 
-            Standard Serbian is based on the most widespread dialect of Serbo-Croatian, Shtokavian (more specifically on Šumadija-Vojvodina and Eastern Herzegovinian dialects[13]), which is also the basis of Standard Croatian, Bosnian, and Montenegrin. [14] The other dialect spoken by Serbs is Torlakian in southeastern Serbia, which is transitional to Macedonian and Bulgarian.
+    <div id="layout">
+        <div id="navbar_overlay" class="hidden"></div>
+        <div id="navbar" style="bottom: 0px;" class="fixed">
+            <div class="nav_panel">
+                <a href="/" class="logo"></a>
 
-            Serbian is practically the only European standard language with complete synchronic digraphia,[15] using both Cyrillic and Latin alphabets; speakers read the two scripts equally[citation needed] well. The Serbian Cyrillic alphabet was devised in 1814 by Serbian linguist Vuk Karadžić, who created the alphabet on phonemic principles. The Latin alphabet was designed by Croatian linguist Ljudevit Gaj in 1830.</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+                <a href="/posts/" class="tab tab_menu" data-tab="menu_tab" title="Меню"><span class="g-icon g-icon-burger"></span></a>
+                <a href="https://habrahabr.ru/auth/login/" class="tab tab_login" id="login" title="Войти"><span class="g-icon g-icon-lock"></span></a>
+
+                <a href="#" class="scroll_to_up scroll_to_up_for_guest" id="scroll_to_top" title="Наверх"></a>
+            </div>
+
+            <div class="nav_tabs_content ">
+                <div class="nav_tab hidden" id="menu_tab">
+                    <div class="title">Разделы</div>
+                    <form action="/search/" method="get" class="global_search_form">
+                        <div>
+                            <input type="text" name="q" placeholder="Поиск">
+                        </div>
+                    </form>
+                    <div class="menu">
+                        <a href="/posts/top/">Публикации</a>
+                        <a href="/hubs/">Хабы</a>
+                        <a href="/companies/">Компании</a>
+                        <a href="/users/">Пользователи</a>
+                        <a href="/sandbox/">Песочница</a>
+                        <div class="line"></div>
+                        <a href="https://toster.ru/" class="new_window">Q&amp;A</a>
+                        <a href="https://moikrug.ru?utm_source=tm_habrahabr&amp;utm_medium=tm_left_menu&amp;utm_campaign=tm_promo" class="new_window">Вакансии</a>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="inner">
+
+            <script type="text/javascript">
+
+                $(document).on('click', '.adb-close', function(){
+                    $('.lain_13_what_are_you_doing').animate({ 'height': 0 });
+
+                    createCookie('adb-p', '1', 1);
+                });
+
+                function readCookie(name) {
+                    var nameEQ = name + "=";
+                    var ca = document.cookie.split(';');
+                    for(var i=0;i < ca.length;i++) {
+                        var c = ca[i];
+                        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                    }
+                    return null;
+                }
+
+                $(document).ready(function(){
+                    if (adb1 == 'yes' && !readCookie('adb-p'))
+                    {
+                        $('.lain_13_what_are_you_doing').show();
+                    }
+                });
+            </script>
+            <div class="lain_13_what_are_you_doing" style="display: none;">
+                <div class="adb-text">
+                    Привет, Хабрапользователь. Кажется, ты используешь AdBlock. Хабрахабр <br>
+                    развивается и существует за счет доходов от рекламы. Добавь нас в исключения.
+                </div>
+                <a class="adb-btn" href="/adblock/">открытое письмо</a>
+                <a class="adb-btn" href="/adblock/?how=1">как отключить</a>
+                <div class="adb-close"></div>
+            </div>
+
+
+
+
+
+
+            <div class="profile-header">
+
+                <div class=" profile-header__summary author-info author-info_profile " id="company_1105">
+                    <a href="/company/devexpress/" class="author-info__image">
+                        <img src="//habrastorage.org/getpro/habr/company/3b0/bbc/aae/3b0bbcaaef705d71bd689c3bdc1fa956.png" class="author-info__image-pic">
+                    </a>
+
+                    <div class="author-info__desc">
+                        <div class="author-info__username">
+                            <a href="/company/devexpress/" class="author-info__name">DevExpress</a>
+                        </div>
+
+                        <div class="author-info__specialization">
+                            Компания
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="profile-header__stats">
+                    <div class="user-rating">
+                        <div class="user-rating__value">79,30</div>
+                        <div class="user-rating__label" title="Хабраиндекс - абстрактный показатель популярности компании на Хабрахабре">рейтинг</div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="column-wrapper">
+                <div class="content_left">
+                    <div class="tabs">
+                        <ul class="tabs-menu tabs-menu_habrahabr">
+                            <li class="tabs-menu__item tabs-menu__item_company-profile tabs-menu__item_inline">
+                                <a href="https://habrahabr.ru/company/devexpress/profile/" class="tab-item tab-item_stacked ">
+              <span class="tab-item__value stats">
+                <span class="stats__counters stats__counters_big">
+                  <strong class="counter"></strong>
+                </span>
+                <span class="stats__value">Профиль</span>
+            </span></a>
+                            </li>
+                            <li class="tabs-menu__item tabs-menu__item_company-profile tabs-menu__item_inline">
+                                <a href="https://habrahabr.ru/company/devexpress/blog/" class="tab-item tab-item_stacked tab-item_current">
+              <span class="tab-item__value stats">
+                <span class="stats__counters stats__counters_big">
+                  <strong class="counter">90</strong>
+                </span>
+                <span class="stats__value">Блог</span>
+            </span></a>
+                            </li>
+                            <li class="tabs-menu__item tabs-menu__item_company-profile tabs-menu__item_inline">
+                                <a href="https://habrahabr.ru/company/devexpress/vacancies/" class="tab-item tab-item_stacked ">
+              <span class="tab-item__value stats">
+                <span class="stats__counters stats__counters_big">
+                  <strong class="counter">0</strong>
+                </span>
+                <span class="stats__value">Вакансии</span>
+            </span></a>
+                            </li>
+                            <li class="tabs-menu__item tabs-menu__item_company-profile tabs-menu__item_inline">
+                                <a href="https://habrahabr.ru/company/devexpress/fans/" class="tab-item tab-item_stacked ">
+              <span class="tab-item__value stats">
+                <span class="stats__counters stats__counters_big">
+                  <strong class="counter">702</strong>
+                </span>
+                <span class="stats__value">Подписчики</span>
+            </span></a>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <div class="company_post">
+
+
+                        <div class="post shortcuts_item" id="post_278823">
+                            <div class="published">сегодня в 12:11</div>
+                            <h1 class="title">
+
+
+                                <span class="post_title">Захвати и визуализируй! Или гистограмма с микрофона средствами Web Audio API</span>
+
+
+
+
+
+                            </h1>
+
+                            <div class="hubs">
+                                <a href="https://habrahabr.ru/hub/sound_and_music/" class="hub " title="Вы не подписаны на этот хаб">Работа со звуком</a><span class="profiled_hub" title="Профильный хаб">*</span>,
+                                <a href="https://habrahabr.ru/hub/programming/" class="hub " title="Вы не подписаны на этот хаб">Программирование</a><span class="profiled_hub" title="Профильный хаб">*</span>,
+                                <a href="https://habrahabr.ru/hub/data_visualization/" class="hub " title="Вы не подписаны на этот хаб">Визуализация данных</a><span class="profiled_hub" title="Профильный хаб">*</span>,
+                                <a href="https://habrahabr.ru/hub/javascript/" class="hub " title="Вы не подписаны на этот хаб">JavaScript</a><span class="profiled_hub" title="Профильный хаб">*</span>,
+                                <a href="https://habrahabr.ru/company/devexpress/" class="hub " title="Вы не подписаны на этот хаб">Блог компании DevExpress</a>
+                            </div>
+
+
+                            <div class="content html_format">
+                                <div style="text-align:center;"><img src="https://habrastorage.org/files/eef/117/880/eef117880c804c1784d09ea8728433d5.png"></div><br>
+                                <br>
+                                Я очень люблю «живые» графики. Смертельная скука — смотреть на статичные картинки с цифрами. Мне хочется, чтобы график завораживал, чтобы заставлял человека, который смотрит на него, взаимодействовать и открывать для себя новые грани всех данных на нем. Поэтому любой пример, что попадает мне в руки, и любая библиотека визуализации, которой не повезло оказаться на моей машине, проходит испытание “оживлением”. Вот и в очередной раз, раздумывая, как же еще я могу раскорячить визуализационные виджеты из <a href="http://js.devexpress.com/WebDevelopment/Charts/">DevExtreme</a> библиотеки, я задумалась об отображении звука. «Интересно и живо» — подумала я в тот день, запаслась чаем с печеньками и засела за эту задачу. Что у меня в итоге вышло — узнаете под катом.<br>
+                                <a name="habracut"></a><br>
+                                Первое, что мне предстояло выбрать — это какой же звук визуализировать. Просто мелодия показалась слишком банальной, к тому же, я нашла <a href="http://habrahabr.ru/post/210422/">замечательную статью</a> на Хабре, полностью описывающую весь процесс от создания звука до визуализации на Canvas. Но, почитав комментарии к этой статье, я заметила некий интерес к захвату аудио с микрофона. Потыкав гугл на предмет наличия подобных статей, я выяснила, что их на эту тему немного. Появилась цель — появился и план действий:<br>
+                                <br>
+                                <div style="text-align:center;"><img src="https://habrastorage.org/files/f67/831/f71/f67831f718174b94b6eff4f1703317ff.jpg"></div><br>
+                                <br>
+                                <b>Захват аудио с микрофона</b>. Один из самых простых способов получить данные с микрофона в браузере — использовать <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia">getUserMedia</a> метод, что находится в объекте общедоступных браузерных методов — в navigator. Принимает он три аргумента:<br>
+                                <ol>
+                                    <li>Настройки захвата аудио и видео:<br>
+<pre><code class="javascript hljs">{ audio: <span class="hljs-literal">true</span>/<span class="hljs-literal">false</span>, video: <span class="hljs-literal">true</span>/<span class="hljs-literal">false</span> }
+</code></pre><br>
+                                    </li>
+                                    <li>Функцию, выполняющуюся в случае успеха</li>
+                                    <li>Функцию, выполняющуюся в случае ошибки</li>
+                                </ol><br>
+                                То есть, в общем случае вызов этого метода выглядит вот так:<br>
+<pre><code class="javascript hljs">navigator.getUserMedia(
+    { audio: <span class="hljs-literal">true</span>, video: <span class="hljs-literal">true</span> },
+    <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">stream</span>) </span>{
+    <span class="hljs-comment">//stream processing</span>
+    },
+    <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+    <span class="hljs-comment">//error processing</span>
+    }
+    );
+</code></pre><br>
+                                Но! Нужно помнить, что метод в разных браузерах различен, поэтому будет не лишним перед вызовом getUserMedia провернуть следующую штуку, и обеспечить поддержку метода во всех распространенных браузерах:<br>
+<pre><code class="javascript hljs">navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+</code></pre><br>
+                                <b>Анализ захваченного аудио</b>. В случае успеха выполнения метода getUserMedia, мы получаем объект типа MediaStream, который уже можно использовать для создания источника аудио с помощью Web Audio API. Но чтобы воспользоваться этим способом, для начала нужно создать <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioContext">AudioContext</a> — наш проводник в мир Web Audio API. Создание очень простое:<br>
+<pre><code class="javascript hljs"><span class="hljs-keyword">var</span> ctx = <span class="hljs-keyword">new</span> AudioContext();
+</code></pre><br>
+                                Опять же, нужно не забывать про кроссбраузерность:<br>
+<pre><code class="javascript hljs"><span class="hljs-keyword">var</span> AudioContext = <span class="hljs-built_in">window</span>.AudioContext || <span class="hljs-built_in">window</span>.webkitAudioContext;
+</code></pre><br>
+                                Теперь, с помощью аудио контекста ctx, есть возможность создать все необходимые элементы для анализа нашего звука. Что же это за элементы?<br>
+                                <br>
+                                <div style="text-align:center;"><img src="https://habrastorage.org/files/0fc/87e/a62/0fc87ea62e384cada0e23ce98fa93eac.jpg"></div><br>
+                                <br>
+                                Элемент <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioDestinationNode">Destination</a> нам доступен по-умолчанию, уже после создания аудио контекста. По сути, это то, куда будет уходить наш звук, а использование конструкции ctx.destination дает нам доступ к стандартному выводу звука для системы, например, к колонкам или наушникам. Остальные же элементы из этой схемы требуется создать и настроить.<br>
+                                <ul>
+                                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode">Source</a> — это источник звука, наше пойманное аудио с микрофона. Необходимо лишь преобразовать поток MediaStream в элемент, с которым мы сможем работать, и для этого подойдет метод аудио контекста createMediaStreamSource:<br>
+<pre><code class="javascript hljs"><span class="hljs-keyword">var</span> source = ctx.createMediaStreamSource(stream);
+</code></pre><br>
+                                    </li>
+                                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode">Analyser</a> — это узел для анализа аудио, многие параметры звука можно вытянуть именно с его помощью. Создается он незатейливым методом аудио контекста createAnalyser:<br>
+<pre><code class="javascript hljs"><span class="hljs-keyword">var</span> analyser = ctx.createAnalyser();
+</code></pre><br>
+                                    </li>
+                                    <li><a href="https://developer.mozilla.org/ru/docs/Web/API/ScriptProcessorNode">ScriptProcessor</a> — это модуль обработки аудио. Он необходим для отслеживания момента изменения звука с помощью события onaudioprocess. Создать его можно, используя метод аудио контекста createScriptProcessor с параметрами размера буфера, количеством входов и выходов:<br>
+<pre><code class="javascript hljs"><span class="hljs-keyword">var</span> processor = ctx.createScriptProcessor(<span class="hljs-number">2048</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);
+</code></pre><br>
+                                    </li>
+                                </ul>Все созданные элементы необходимо соединить между собой, как показано на схеме. Web Audio API предоставляет пару методов connect/disconnect для связывания и развязывания узлов:<br>
+<pre><code class="javascript hljs">source.connect(analyser);
+    source.connect(processor);
+    analyser.connect(ctx.destination);
+    processor.connect(ctx.destination);
+</code></pre><br>
+                                При запуске всего этого кода (<a href="https://jsfiddle.net/jdxnmgkq/5/">вот пример</a>) и при малой толике удачи можно услышать из колонок/наушников звук с микрофона. Слушать свой голос весьма раздражает, поэтому с чистой совестью можно не создавать связи анализатора с аудио выходом, на конечный результат это никак не повлияет. Конечная схема работы будет выглядеть так:<br>
+                                <br>
+                                <div style="text-align:center;"><img src="https://habrastorage.org/files/a65/d7e/496/a65d7e4965a942de9bccccb4632825b2.jpg"></div><br>
+                                <br>
+                                Последние штрихи — разбор звука по кирпичикам. Для анализатора есть возможность задать размерность преобразования Фурье — опцию fftSize. Зачем она сдалась? А затем, что в итоге получится количество элементов данных равное fftSize/2, то есть количество точек для графика:<br>
+<pre><code class="javascript hljs">analyser.fftSize = <span class="hljs-number">128</span>;
+</code></pre><br>
+                                Осталось лишь получать данные о частотах звука от анализатора, сохраняя их в специально созданную для этого переменную data. Изменение звука отслеживается благодаря уже знакомому нам событию onaudioprocess:<br>
+<pre><code class="javascript hljs"><span class="hljs-keyword">var</span> data = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(analyser.frequencyBinCount);
+    processor.onaudioprocess = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>)</span>{
+    analyser.getByteFrequencyData(data);
+    <span class="hljs-built_in">console</span>.log(data);
+    }
+</code></pre><br>
+                                Та-дам! И вот они, заветные циферки с микрофона в консоли (<a href="https://jsfiddle.net/vsj05jr2/1/">пример</a>):<br>
+                                <br>
+                                <div style="text-align:center;"><img src="https://habrastorage.org/files/7d4/aee/3c0/7d4aee3c010444ec911b9abbb6219a48.png"></div><br>
+                                <br>
+                                <b>Визуализация полученных данных</b>. Непосредственно “оживляющая” часть, превращение циферок в график, для которого понадобится библиотека <a href="http://js.devexpress.com/">DevExtreme</a>. Первым делом, конечно же, требуется создать график:<br>
+<pre><code class="html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"chart"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"width: 800px; height: 250px"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre><br>
+<pre><code class="javascript hljs"><span class="hljs-keyword">var</span> chart = chart = $(<span class="hljs-string">"#chart"</span>).dxChart({
+    <span class="hljs-comment">//chart options</span>
+    }).dxChart(<span class="hljs-string">"instance"</span>);
+</code></pre><br>
+                                Такой созданный график будет пустым, потому что для него нужны данные — опция dataSource, и серия, которую нужно отобразить — опция series. При этом данные — динамические, и их нужно менять при срабатывания события onaudioprocess:<br>
+<pre><code class="javascript hljs"><span class="hljs-keyword">var</span> dataSource = $.map(data, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item, index</span>) </span>{
+    <span class="hljs-keyword">return</span> { arg: index, val: item };
+    });
+    chart.option(<span class="hljs-string">"dataSource"</span>, dataSource);
+</code></pre><br>
+                                Добавив пару настроек для графика, типа цвета и вида серии, можно в итоге получить вот такую замечательную вещь:<br>
+                                <br>
+                                <div style="text-align:center;"><img src="https://habrastorage.org/files/81e/476/502/81e476502536411fb09df7d8a0c1951b.gif"></div><br>
+                                <br>
+                                А итоговый код будет выглядеть вот так, просто и лаконично:<br>
+                                <div class="spoiler"><b class="spoiler_title">Итоговый код</b><div class="spoiler_text"><pre><code class="javascript hljs">navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+
+                                    navigator.getUserMedia(
+                                    { audio: <span class="hljs-literal">true</span>, video: <span class="hljs-literal">false</span> },
+                                    <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">stream</span>) </span>{
+                                    <span class="hljs-keyword">var</span> AudioContext = <span class="hljs-built_in">window</span>.AudioContext || <span class="hljs-built_in">window</span>.webkitAudioContext,
+                                    ctx = <span class="hljs-keyword">new</span> AudioContext(),
+                                    source = ctx.createMediaStreamSource(stream),
+                                    analyser = ctx.createAnalyser(),
+                                    processor = ctx.createScriptProcessor(<span class="hljs-number">2048</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>),
+                                    data,
+                                    chart,
+                                    dataSource;
+
+                                    source.connect(analyser);
+                                    source.connect(processor);
+                                    <span class="hljs-comment">//analyser.connect(ctx.destination);</span>
+                                    processor.connect(ctx.destination);
+
+                                    chart = $(<span class="hljs-string">"#chart"</span>).dxChart({
+                                    dataSource: [],
+                                    legend: {
+                                    visible: <span class="hljs-literal">false</span>
+                                    },
+                                    argumentAxis: {
+                                    label: {
+                                    visible: <span class="hljs-literal">false</span>
+                                    }
+                                    },
+                                    valueAxis: {
+                                    grid: {
+                                    visible: <span class="hljs-literal">false</span>
+                                    },
+                                    label: {
+                                    visible: <span class="hljs-literal">false</span>
+                                    }
+                                    },
+                                    series: {
+                                    hoverMode: <span class="hljs-string">"none"</span>,
+                                    type: <span class="hljs-string">"bar"</span>,
+                                    color: <span class="hljs-string">"#1E90FF"</span>
+                                    }
+                                    }).dxChart(<span class="hljs-string">"instance"</span>);
+                                    data = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(analyser.frequencyBinCount);
+                                    processor.onaudioprocess = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>)</span>{
+                                    analyser.getByteFrequencyData(data);
+                                    dataSource = $.map(data, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item, index</span>) </span>{
+                                    <span class="hljs-keyword">return</span> { arg: index, val: item };
+                                    });
+                                    chart.option(<span class="hljs-string">"dataSource"</span>, dataSource);
+                                    }
+                                    },
+                                    <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+                                    <span class="hljs-comment">//error processing</span>
+                                    }
+                                    );
+                                </code></pre></div></div><br>
+                                Вот здесь можно найти <a href="https://jsfiddle.net/tatyanaRyzh/1ba1c0ta/1/">готовый пример</a>. При желании можно собрать пример локально, или даже заменить визуализацию на любую другую понравившуюся. Главное — это насколько быстро и просто с помощью Web Audio API и библиотеки DevExtreme собирается подобный пример.<br>
+                                <br>
+                                Как всегда, жду ваши замечания и предложения в комментариях к статье. Всем хорошего дня!
+
+
+                                <div class="clear"></div>
+                            </div>
+
+
+                            <ul class="tags icon_tag">
+                                <li><a href="https://habrahabr.ru/search/?q=%5Bdevexpress%5D&amp;target_type=posts" rel="tag">devexpress</a>, </li>
+                                <li><a href="https://habrahabr.ru/search/?q=%5Bdevextreme%5D&amp;target_type=posts" rel="tag">devextreme</a>, </li>
+                                <li><a href="https://habrahabr.ru/search/?q=%5Bjs%5D&amp;target_type=posts" rel="tag">js</a>, </li>
+                                <li><a href="https://habrahabr.ru/search/?q=%5Bwebapi%5D&amp;target_type=posts" rel="tag">webapi</a></li>
+                            </ul>
+
+
+                            <div class="infopanel_wrapper js-user_">
+                                <ul class="postinfo-panel postinfo-panel_post" id="infopanel_post_278823">
+
+                                    <li class="postinfo-panel__item">
+                                        <div class="voting-wjt voting-wjt_infopanel js-voting  ">
+                                            <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_plus js-plus" title="Голосовать могут только зарегистрированные пользователи.">
+                                                <span>↑</span>
+                                            </button>
+
+                                            <div class="voting-wjt__counter js-mark">
+                                                <span class="voting-wjt__result-score js-score" title="Результат голосования виден только авторизованным пользователям">—</span>
+                                            </div>
+
+                                            <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_minus js-minus" title="Голосовать могут только зарегистрированные пользователи.">
+                                                <span>↓</span>
+                                            </button>
+
+                                        </div>
+                                    </li>
+
+                                    <li class="postinfo-panel__item">
+                                        <div class="views-count_post" title="Просмотры публикации">1,3k</div>
+                                    </li>
+
+                                    <li class="postinfo-panel__item">
+                                        <div class="favorite-wjt favorite">
+                                            <button type="button" disabled="" class="favorite-wjt__button favorite-wjt__button_disabled" onclick="return false;" title="Только зарегистрированные пользователи могут добавлять публикации в избранное">
+                                                <span>Добавить в избранное</span>
+                                            </button>
+                                            <span class="favorite-wjt__counter js-favs_count" title="Количество пользователей, добавивших публикацию в избранное">17</span>
+                                        </div>
+                                    </li>
+
+
+
+
+                                    <!-- шеринг в соцсети -->
+                                    <li class="postinfo-panel__item postinfo-panel__item_socials  postinfo-panel__item_socials_right ">
+                                        <ul class="post-share">
+                                            <li class="post-share__item">
+                                                <a href="https://twitter.com/intent/tweet?text=%D0%97%D0%B0%D1%85%D0%B2%D0%B0%D1%82%D0%B8+%D0%B8+%D0%B2%D0%B8%D0%B7%D1%83%D0%B0%D0%BB%D0%B8%D0%B7%D0%B8%D1%80%D1%83%D0%B9%21+%D0%98%D0%BB%D0%B8+%D0%B3%D0%B8%D1%81%D1%82%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B0+%D1%81+%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D1%84%D0%BE%D0%BD%D0%B0+%D1%81%D1%80%D0%B5%D0%B4%D1%81%D1%82%D0%B2%D0%B0%D0%BC%D0%B8+Web+Audio+API+http://habr.ru/p/278823/+via+%40habrahabr+%23habr" class="post-share__item-link twitter" title="Опубликовать ссылку в Twitter" target="_blank"></a>
+                                            </li>
+                                            <li class="post-share__item">
+                                                <a href="https://vk.com/share.php?url=https://habrahabr.ru/company/devexpress/blog/278823/" class="post-share__item-link vkontakte" title="Опубликовать ссылку во ВКонтакте" onclick="window.open(this.href, 'Опубликовать ссылку во Вконтакте', 'width=800,height=300'); return false"></a>
+                                            </li>
+                                            <li class="post-share__item">
+                                                <a href="https://www.facebook.com/sharer/sharer.php?u=https://habrahabr.ru/company/devexpress/blog/278823/" class="post-share__item-link facebook" title="Опубликовать ссылку в Facebook" onclick="window.open(this.href, 'Опубликовать ссылку в Facebook', 'width=640,height=436,toolbar=0,status=0'); return false"></a>
+                                            </li>
+                                            <li class="post-share__item">
+                                                <a href="https://getpocket.com/edit?url=https://habrahabr.ru/company/devexpress/blog/278823/" target="_blank" class="post-share__item-link pocket" title="Добавить ссылку в Pocket"></a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <!-- кнопка пожаловаться -->
+                                </ul>
+                            </div>
+
+
+                            <div class="post-type">
+    <span class="post-type_nowrap">
+      <span class="post-type__label post-type__label_author">Автор:</span>
+      <a href="/users/tatyana_ryzh" class="post-type__value post-type__value_author" title="@tatyana_ryzh">@tatyana_ryzh</a>
+
+
+
+    </span>
+                            </div>
+
+                            <div class="author-info " id="company_1105">
+                                <a href="/company/devexpress" class="author-info__image">
+                                    <img src="//habrastorage.org/getpro/habr/company/3b0/bbc/aae/3b0bbcaaef705d71bd689c3bdc1fa956.png" class="author-info__image-pic">
+                                </a>
+
+                                <div class="author-info__desc">
+                                    <div class="author-info__username">
+
+                                        <a href="/company/devexpress" class="author-info__name">DevExpress</a>
+
+                                        <div class="user-rating">
+                                            <span class="user-rating__label">рейтинг</span>
+                                            <span class="user-rating__value">79,30</span>
+                                        </div>
+                                    </div>
+
+
+                                    <ul class="author-info__contacts user-contacts">
+                                        <li class="user-contacts__item"><a href="http://go.devexpress.com/Habr_Devexpress.aspx" target="_blank">Сайт</a></li>
+                                        <li class="user-contacts__item"><a href="http://facebook.com/DevExpress" target="_blank">Facebook</a></li>
+                                        <li class="user-contacts__item"><a href="http://vk.com/DevExpress" target="_blank">Вконтакте</a></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="block_after_post">
+
+                            <div class="similar-posts">
+                                <h2 class="similar-posts__title">Похожие публикации</h2>
+
+                                <ul class="content-list content-list_posts">
+                                    <li class="content-list__item">
+                                        <div class="post-preview">
+                                            <div class="post-preview__rating">+25</div>
+                                            <div class="post-preview__desc">
+                                                <a class="post-preview__link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'similar_posts', 'common'); }" href="/post/249881/">DevExpress на Go#Moscow – День ASP.NET</a>
+                <span class="post-preview__attrs inline-list inline-list_attrs">
+                  <span class="inline-list__item views-count">5,2k</span>
+                  <span class="inline-list__item favorites-count">12</span>
+                  <span class="inline-list__item comments-count">5</span>
+                </span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="content-list__item">
+                                        <div class="post-preview">
+                                            <div class="post-preview__rating">+22</div>
+                                            <div class="post-preview__desc">
+                                                <a class="post-preview__link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'similar_posts', 'common'); }" href="/post/249497/">DevExtreme: фильтруем данные на графике</a>
+                <span class="post-preview__attrs inline-list inline-list_attrs">
+                  <span class="inline-list__item views-count">6,5k</span>
+                  <span class="inline-list__item favorites-count">61</span>
+                  <span class="inline-list__item comments-count">2</span>
+                </span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="content-list__item">
+                                        <div class="post-preview">
+                                            <div class="post-preview__rating">+24</div>
+                                            <div class="post-preview__desc">
+                                                <a class="post-preview__link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'similar_posts', 'common'); }" href="/post/246031/">Больше возможностей с новой версией продуктов DevExpress 14.2</a>
+                <span class="post-preview__attrs inline-list inline-list_attrs">
+                  <span class="inline-list__item views-count">9,7k</span>
+                  <span class="inline-list__item favorites-count">28</span>
+                  <span class="inline-list__item comments-count">18</span>
+                </span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                        <div class="comments_list " id="comments">
+
+                            <h2 class="title ">Комментарии (<span id="comments_count">8</span>)
+
+
+                            </h2>
+
+
+
+                            <div class="comment_item" id="comment_8798763">
+
+                                <span class="parent_id" data-parent_id="0"></span>
+
+                                <div class="comment_body ">
+                                    <div class="info comments-list__item comment-item  " rel="8798763">
+
+                                        <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+
+          <span class="comment-item__user-info" data-user-login="kozyabka">
+            <a href="https://habrahabr.ru/users/kozyabka/" class="comment-item__avatar">
+                <img src="//habrastorage.org/getpro/habr/avatars/87f/081/5be/87f0815be3a12522579efea53df314fc_small.png" alt="" class="comment-item__avatar-img">
+            </a>
+            <a href="https://habrahabr.ru/users/kozyabka/" class="comment-item__username">kozyabka</a>
+          </span>
+
+                                        <time class="comment-item__time_published"> 9 марта 2016 в 12:54</time>
+
+          <span class="comment-item__controls">
+            <a href="#comment_8798763" class="icon_comment-anchor" title="Ссылка на комментарий"></a>
+
+
+            <span class="js-comment_chidren" title="Вернуться к ответу"></span>
+          </span>
+
+                                        <div id="voting_8798763" class="voting-wjt voting-wjt_comments js-voting   ">
+
+                                            <div class="voting-wjt__counter js-mark  ">
+                                                <span class="voting-wjt__counter-score js-score" title="Всего 0: ↑0 и ↓0">0</span>
+                                            </div>
+
+                                            <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_plus js-plus" title="Голосовать могут только зарегистрированные пользователи"><span>↑</span></button>
+
+                                            <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_minus js-minus" title="Голосовать могут только зарегистрированные пользователи"><span>↓</span></button>
+                                        </div>
+                                    </div>
+
+                                    <div class="message html_format ">
+                                        Сравнил со спектроанализатором из Аблетона, не сильно похоже — http://screencast.com/t/sw9kEutqs4
+                                    </div>
+
+                                    <div class="reply_form_placeholder"></div>
+
+                                    <div class="reply">
+
+                                    </div>
+                                </div>
+
+                                <div class="reply_comments" id="reply_comments_8798763">
+                                    <div class="comment_item" id="comment_8798783">
+
+                                        <span class="parent_id" data-parent_id="8798763"></span>
+
+                                        <div class="comment_body ">
+                                            <div class="info comments-list__item comment-item  " rel="8798783">
+
+                                                <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+
+          <span class="comment-item__user-info" data-user-login="Alexufo">
+            <a href="https://habrahabr.ru/users/Alexufo/" class="comment-item__avatar">
+                <img src="//habrastorage.org/getpro/habr/avatars/324/18a/e1e/32418ae1eab8433a87d3030a0dd78238_small.png" alt="" class="comment-item__avatar-img">
+            </a>
+            <a href="https://habrahabr.ru/users/Alexufo/" class="comment-item__username">Alexufo</a>
+          </span>
+
+                                                <time class="comment-item__time_published"> 9 марта 2016 в 13:11</time>
+
+          <span class="comment-item__controls">
+            <a href="#comment_8798783" class="icon_comment-anchor" title="Ссылка на комментарий"></a>
+
+
+              <span class="icon_comment-tree js-comment_tree" data-id="8798783" data-parent_id="8798763" title="Показать ветку комментариев"></span>
+              <a href="#comment_8798763" class="icon_comment-parent js-comment_parent" data-id="8798783" data-parent_id="8798763" title="Показать предыдущий комментарий"></a>
+            <span class="js-comment_chidren" title="Вернуться к ответу"></span>
+          </span>
+
+                                                <div id="voting_8798783" class="voting-wjt voting-wjt_comments js-voting   ">
+
+                                                    <div class="voting-wjt__counter js-mark  ">
+                                                        <span class="voting-wjt__counter-score js-score" title="Всего 0: ↑0 и ↓0">0</span>
+                                                    </div>
+
+                                                    <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_plus js-plus" title="Голосовать могут только зарегистрированные пользователи"><span>↑</span></button>
+
+                                                    <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_minus js-minus" title="Голосовать могут только зарегистрированные пользователи"><span>↓</span></button>
+                                                </div>
+                                            </div>
+
+                                            <div class="message html_format ">
+                                                как вы проводили эксперимент?<br>
+
+                                            </div>
+
+                                            <div class="reply_form_placeholder"></div>
+
+                                            <div class="reply">
+
+                                            </div>
+                                        </div>
+
+                                        <div class="reply_comments" id="reply_comments_8798783">
+                                            <div class="comment_item" id="comment_8798827">
+
+                                                <span class="parent_id" data-parent_id="8798783"></span>
+
+                                                <div class="comment_body ">
+                                                    <div class="info comments-list__item comment-item  " rel="8798827">
+
+                                                        <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+
+          <span class="comment-item__user-info" data-user-login="kozyabka">
+            <a href="https://habrahabr.ru/users/kozyabka/" class="comment-item__avatar">
+                <img src="//habrastorage.org/getpro/habr/avatars/87f/081/5be/87f0815be3a12522579efea53df314fc_small.png" alt="" class="comment-item__avatar-img">
+            </a>
+            <a href="https://habrahabr.ru/users/kozyabka/" class="comment-item__username">kozyabka</a>
+          </span>
+
+                                                        <time class="comment-item__time_published"> 9 марта 2016 в 13:31</time>
+
+          <span class="comment-item__controls">
+            <a href="#comment_8798827" class="icon_comment-anchor" title="Ссылка на комментарий"></a>
+
+
+              <span class="icon_comment-tree js-comment_tree" data-id="8798827" data-parent_id="8798783" title="Показать ветку комментариев"></span>
+              <a href="#comment_8798783" class="icon_comment-parent js-comment_parent" data-id="8798827" data-parent_id="8798783" title="Показать предыдущий комментарий"></a>
+            <span class="js-comment_chidren" title="Вернуться к ответу"></span>
+          </span>
+
+                                                        <div id="voting_8798827" class="voting-wjt voting-wjt_comments js-voting   ">
+
+                                                            <div class="voting-wjt__counter js-mark  ">
+                                                                <span class="voting-wjt__counter-score js-score" title="Всего 0: ↑0 и ↓0">0</span>
+                                                            </div>
+
+                                                            <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_plus js-plus" title="Голосовать могут только зарегистрированные пользователи"><span>↑</span></button>
+
+                                                            <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_minus js-minus" title="Голосовать могут только зарегистрированные пользователи"><span>↓</span></button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="message html_format ">
+                                                        1. Открыл ссылку из статьи и разрешил хрому использовать микрофон. Появилось отображение сигнала. <br>
+                                                        2. Открыл аблетон, кинул на аудио дорожку эквалайзер. На вход дорожки назначил тот же микрофон.<br>
+                                                        3. Пододвинул аблетон так, чтобы было видно и его эквалайзер и отображение на сайте одновременно, сделал скриншот.
+                                                    </div>
+
+                                                    <div class="reply_form_placeholder"></div>
+
+                                                    <div class="reply">
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="reply_comments" id="reply_comments_8798827">
+                                                    <div class="comment_item" id="comment_8798833">
+
+                                                        <span class="parent_id" data-parent_id="8798827"></span>
+
+                                                        <div class="comment_body ">
+                                                            <div class="info comments-list__item comment-item  " rel="8798833">
+
+                                                                <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+
+          <span class="comment-item__user-info" data-user-login="Alexufo">
+            <a href="https://habrahabr.ru/users/Alexufo/" class="comment-item__avatar">
+                <img src="//habrastorage.org/getpro/habr/avatars/324/18a/e1e/32418ae1eab8433a87d3030a0dd78238_small.png" alt="" class="comment-item__avatar-img">
+            </a>
+            <a href="https://habrahabr.ru/users/Alexufo/" class="comment-item__username">Alexufo</a>
+          </span>
+
+                                                                <time class="comment-item__time_published"> 9 марта 2016 в 13:35</time>
+
+          <span class="comment-item__controls">
+            <a href="#comment_8798833" class="icon_comment-anchor" title="Ссылка на комментарий"></a>
+
+
+              <span class="icon_comment-tree js-comment_tree" data-id="8798833" data-parent_id="8798827" title="Показать ветку комментариев"></span>
+              <a href="#comment_8798827" class="icon_comment-parent js-comment_parent" data-id="8798833" data-parent_id="8798827" title="Показать предыдущий комментарий"></a>
+            <span class="js-comment_chidren" title="Вернуться к ответу"></span>
+          </span>
+
+                                                                <div id="voting_8798833" class="voting-wjt voting-wjt_comments js-voting   ">
+
+                                                                    <div class="voting-wjt__counter js-mark  ">
+                                                                        <span class="voting-wjt__counter-score js-score" title="Всего 0: ↑0 и ↓0">0</span>
+                                                                    </div>
+
+                                                                    <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_plus js-plus" title="Голосовать могут только зарегистрированные пользователи"><span>↑</span></button>
+
+                                                                    <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_minus js-minus" title="Голосовать могут только зарегистрированные пользователи"><span>↓</span></button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="message html_format ">
+                                                                Хм… просто я думал что доступ к микрофону всегда монопольный.<br>
+
+                                                            </div>
+
+                                                            <div class="reply_form_placeholder"></div>
+
+                                                            <div class="reply">
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="reply_comments" id="reply_comments_8798833">
+                                                            <div class="comment_item" id="comment_8798835">
+
+                                                                <span class="parent_id" data-parent_id="8798833"></span>
+
+                                                                <div class="comment_body ">
+                                                                    <div class="info comments-list__item comment-item  " rel="8798835">
+
+                                                                        <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+
+          <span class="comment-item__user-info" data-user-login="kozyabka">
+            <a href="https://habrahabr.ru/users/kozyabka/" class="comment-item__avatar">
+                <img src="//habrastorage.org/getpro/habr/avatars/87f/081/5be/87f0815be3a12522579efea53df314fc_small.png" alt="" class="comment-item__avatar-img">
+            </a>
+            <a href="https://habrahabr.ru/users/kozyabka/" class="comment-item__username">kozyabka</a>
+          </span>
+
+                                                                        <time class="comment-item__time_published"> 9 марта 2016 в 13:37</time>
+
+          <span class="comment-item__controls">
+            <a href="#comment_8798835" class="icon_comment-anchor" title="Ссылка на комментарий"></a>
+
+
+              <span class="icon_comment-tree js-comment_tree" data-id="8798835" data-parent_id="8798833" title="Показать ветку комментариев"></span>
+              <a href="#comment_8798833" class="icon_comment-parent js-comment_parent" data-id="8798835" data-parent_id="8798833" title="Показать предыдущий комментарий"></a>
+            <span class="js-comment_chidren" title="Вернуться к ответу"></span>
+          </span>
+
+                                                                        <div id="voting_8798835" class="voting-wjt voting-wjt_comments js-voting   ">
+
+                                                                            <div class="voting-wjt__counter js-mark  ">
+                                                                                <span class="voting-wjt__counter-score js-score" title="Всего 0: ↑0 и ↓0">0</span>
+                                                                            </div>
+
+                                                                            <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_plus js-plus" title="Голосовать могут только зарегистрированные пользователи"><span>↑</span></button>
+
+                                                                            <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_minus js-minus" title="Голосовать могут только зарегистрированные пользователи"><span>↓</span></button>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="message html_format ">
+                                                                        В Лисе проверить не могу — очень тормозит.
+                                                                    </div>
+
+                                                                    <div class="reply_form_placeholder"></div>
+
+                                                                    <div class="reply">
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="reply_comments" id="reply_comments_8798835">
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="comment_item" id="comment_8798843">
+
+                                                        <span class="parent_id" data-parent_id="8798827"></span>
+
+                                                        <div class="comment_body ">
+                                                            <div class="info comments-list__item comment-item  is_topic_starter  " rel="8798843">
+
+                                                                <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+
+          <span class="comment-item__user-info" data-user-login="tatyana_ryzh">
+            <a href="https://habrahabr.ru/users/tatyana_ryzh/" class="comment-item__avatar">
+                <img src="//habrastorage.org/getpro/habr/avatars/ca3/42f/3ef/ca342f3efe4572c79b1e7a5264290561_small.jpg" alt="" class="comment-item__avatar-img">
+            </a>
+            <a href="https://habrahabr.ru/users/tatyana_ryzh/" class="comment-item__username">tatyana_ryzh</a>
+          </span>
+
+                                                                <time class="comment-item__time_published"> 9 марта 2016 в 13:40</time>
+
+          <span class="comment-item__controls">
+            <a href="#comment_8798843" class="icon_comment-anchor" title="Ссылка на комментарий"></a>
+
+
+              <span class="icon_comment-tree js-comment_tree" data-id="8798843" data-parent_id="8798827" title="Показать ветку комментариев"></span>
+              <a href="#comment_8798827" class="icon_comment-parent js-comment_parent" data-id="8798843" data-parent_id="8798827" title="Показать предыдущий комментарий"></a>
+            <span class="js-comment_chidren" title="Вернуться к ответу"></span>
+          </span>
+
+                                                                <div id="voting_8798843" class="voting-wjt voting-wjt_comments js-voting   ">
+
+                                                                    <div class="voting-wjt__counter js-mark  ">
+                                                                        <span class="voting-wjt__counter-score js-score" title="Всего 0: ↑0 и ↓0">0</span>
+                                                                    </div>
+
+                                                                    <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_plus js-plus" title="Голосовать могут только зарегистрированные пользователи"><span>↑</span></button>
+
+                                                                    <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_minus js-minus" title="Голосовать могут только зарегистрированные пользователи"><span>↓</span></button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="message html_format ">
+                                                                Ради интереса, а "мозильный" пример совпадает? Вот ссылка — <a href="https://mdn.github.io/voice-change-o-matic/">https://mdn.github.io/voice-change-o-matic/</a><br>
+
+                                                            </div>
+
+                                                            <div class="reply_form_placeholder"></div>
+
+                                                            <div class="reply">
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="reply_comments" id="reply_comments_8798843">
+                                                            <div class="comment_item" id="comment_8798867">
+
+                                                                <span class="parent_id" data-parent_id="8798843"></span>
+
+                                                                <div class="comment_body ">
+                                                                    <div class="info comments-list__item comment-item  " rel="8798867">
+
+                                                                        <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+
+          <span class="comment-item__user-info" data-user-login="Alexufo">
+            <a href="https://habrahabr.ru/users/Alexufo/" class="comment-item__avatar">
+                <img src="//habrastorage.org/getpro/habr/avatars/324/18a/e1e/32418ae1eab8433a87d3030a0dd78238_small.png" alt="" class="comment-item__avatar-img">
+            </a>
+            <a href="https://habrahabr.ru/users/Alexufo/" class="comment-item__username">Alexufo</a>
+          </span>
+
+                                                                        <time class="comment-item__time_published"> 9 марта 2016 в 13:55<span class="comment-item__time_changed"> (комментарий был изменён)</span></time>
+
+          <span class="comment-item__controls">
+            <a href="#comment_8798867" class="icon_comment-anchor" title="Ссылка на комментарий"></a>
+
+
+              <span class="icon_comment-tree js-comment_tree" data-id="8798867" data-parent_id="8798843" title="Показать ветку комментариев"></span>
+              <a href="#comment_8798843" class="icon_comment-parent js-comment_parent" data-id="8798867" data-parent_id="8798843" title="Показать предыдущий комментарий"></a>
+            <span class="js-comment_chidren" title="Вернуться к ответу"></span>
+          </span>
+
+                                                                        <div id="voting_8798867" class="voting-wjt voting-wjt_comments js-voting   ">
+
+                                                                            <div class="voting-wjt__counter js-mark  ">
+                                                                                <span class="voting-wjt__counter-score js-score" title="Всего 0: ↑0 и ↓0">0</span>
+                                                                            </div>
+
+                                                                            <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_plus js-plus" title="Голосовать могут только зарегистрированные пользователи"><span>↑</span></button>
+
+                                                                            <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_minus js-minus" title="Голосовать могут только зарегистрированные пользователи"><span>↓</span></button>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="message html_format ">
+                                                                        мозильный просит закрыть приложение так как "приложение не отвечает" :-)<br>
+
+                                                                    </div>
+
+                                                                    <div class="reply_form_placeholder"></div>
+
+                                                                    <div class="reply">
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="reply_comments" id="reply_comments_8798867">
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="comment_item" id="comment_8798825">
+
+                                        <span class="parent_id" data-parent_id="8798763"></span>
+
+                                        <div class="comment_body ">
+                                            <div class="info comments-list__item comment-item  " rel="8798825">
+
+                                                <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+
+          <span class="comment-item__user-info" data-user-login="SHVV">
+            <a href="https://habrahabr.ru/users/SHVV/" class="comment-item__avatar">
+                <img src="//habrastorage.org/getpro/habr/avatars/f30/eae/56a/f30eae56aa0e18c3d59b607d80d0387b_small.jpg" alt="" class="comment-item__avatar-img">
+            </a>
+            <a href="https://habrahabr.ru/users/SHVV/" class="comment-item__username">SHVV</a>
+          </span>
+
+                                                <time class="comment-item__time_published"> 9 марта 2016 в 13:30</time>
+
+          <span class="comment-item__controls">
+            <a href="#comment_8798825" class="icon_comment-anchor" title="Ссылка на комментарий"></a>
+
+
+              <span class="icon_comment-tree js-comment_tree" data-id="8798825" data-parent_id="8798763" title="Показать ветку комментариев"></span>
+              <a href="#comment_8798763" class="icon_comment-parent js-comment_parent" data-id="8798825" data-parent_id="8798763" title="Показать предыдущий комментарий"></a>
+            <span class="js-comment_chidren" title="Вернуться к ответу"></span>
+          </span>
+
+                                                <div id="voting_8798825" class="voting-wjt voting-wjt_comments js-voting   ">
+
+                                                    <div class="voting-wjt__counter js-mark voting-wjt__counter_positive ">
+                                                        <span class="voting-wjt__counter-score js-score" title="Всего 2: ↑2 и ↓0">+2</span>
+                                                    </div>
+
+                                                    <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_plus js-plus" title="Голосовать могут только зарегистрированные пользователи"><span>↑</span></button>
+
+                                                    <button type="button" disabled="" class="voting-wjt__button voting-wjt__button_minus js-minus" title="Голосовать могут только зарегистрированные пользователи"><span>↓</span></button>
+                                                </div>
+                                            </div>
+
+                                            <div class="message html_format ">
+                                                Возможно, разница в шкалах: линейная/логарифмическая.<br>
+
+                                            </div>
+
+                                            <div class="reply_form_placeholder"></div>
+
+                                            <div class="reply">
+
+                                            </div>
+                                        </div>
+
+                                        <div class="reply_comments" id="reply_comments_8798825">
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <p class="for_users_only_msg">Только зарегистрированные пользователи могут оставлять комментарии. <a href="https://habrahabr.ru/auth/login/">Войдите</a>, пожалуйста.</p>
+
+
+
+                        <form action="/json/favorites/" method="post" id="edit_tags_form" class="hidden">
+                            <input type="hidden" name="action" value="add">
+                            <input type="hidden" name="ti" value="0">
+                            <input type="hidden" name="tt" value="0">
+                            <label>Пометьте топик понятными вам метками, если хотите</label>
+                            <input type="text" name="tags_string" class="tags_string" autocomplete="off">
+                            <div class="description">Метки лучше разделять запятой. Например: <i>общение, социальные сети, myspace.com, подростки, мердок</i></div>
+                            <input type="submit" value="Сохранить" class="submit"> или <a href="#" class="close" onclick="return close_edit_tags()">закрыть</a>
+                        </form>
+
+                    </div>
+                </div>
+
+                <div class="sidebar_right">
+
+
+
+                    <div class=" company_widgets">
+
+
+
+                        <div class="company_widget" style="text-align: center">
+                            <div class="company-banner">
+                                <a href="http://go.devexpress.com/Habr_Devexpress.aspx">
+                                    <img src="//habrastorage.org/getpro/habr/widget/b93/cc2/573/b93cc2573591270cda6798c257279b6b.png">
+                                </a>
+                            </div>
+
+                            <div class="announce">
+                                <a href="http://go.devexpress.com/Habr_Facebook.aspx"><img src="http://habrastorage.org/storage/80219ea5/9afd22fb/29bb6677/82bee878.png" alt="DevExpress на Фейсбук"></a><br>
+                                <a href="http://go.devexpress.com/Habr_Twitter.aspx"><img src="http://habrastorage.org/storage/3125b404/c75eb132/6b69e2d0/811ef0aa.png" alt="DevExpress Твиттер"></a><br>
+                                <a href="http://go.devexpress.com/Habr_WatchVideos.aspx"><img src="http://habrastorage.org/storage/9a61be86/2386099e/ca038978/0f7de4fa.png" alt="Обучающие видео на DevExpress Channel"></a><br>
+                                <a href="http://go.devexpress.com/ReadBlogs.aspx"><img src="http://habrastorage.org/storage/336c5801/b0a6332a/baff574d/c98f5b43.png" alt="Блоги DevExpress"></a><br>
+                                <a href="http://go.devexpress.com/Habr_DXRussia.aspx"><img src="http://habrastorage.org/storage/fcae5a0c/2e5eba68/6283a686/9967ded1.png" alt="DX-Россия"></a>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+                        <div class="block company_links">
+                            <div class="title">Ссылки</div>
+                            <div class="links">
+                                <div class="link">
+                                    <a href="http://go.devexpress.com/Habr_Devexpress.aspx">Официальный сайт DevExpress</a>
+                                    <div><small>go.devexpress.com</small></div>
+                                </div>
+                                <div class="link">
+                                    <a href="http://go.devexpress.com/Habr_ReadBlogs.aspx">Блоги сотрудников DevExpress</a>
+                                    <div><small>go.devexpress.com</small></div>
+                                </div>
+                                <div class="link">
+                                    <a href="http://go.devexpress.com/Habr_Forums.aspx">Форумы для пользователей DevExpress</a>
+                                    <div><small>go.devexpress.com</small></div>
+                                </div>
+                                <div class="link">
+                                    <a href="http://go.devexpress.com/Habr_WatchVideos.aspx">Видео-уроки онлайн</a>
+                                    <div><small>go.devexpress.com</small></div>
+                                </div>
+                                <div class="link">
+                                    <a href="http://go.devexpress.com/Habr_Webinars.aspx">Обучающие вебинары</a>
+                                    <div><small>go.devexpress.com</small></div>
+                                </div>
+                                <div class="link">
+                                    <a href="http://go.devexpress.com/Habr_Documentation.aspx">Документация</a>
+                                    <div><small>go.devexpress.com</small></div>
+                                </div>
+                                <div class="link">
+                                    <a href="http://go.devexpress.com/Habr_Support.aspx">Служба поддержки</a>
+                                    <div><small>go.devexpress.com</small></div>
+                                </div>
+                                <div class="link">
+                                    <a href="http://go.devexpress.com/Habr_DXRussia.aspx">Сайт российского представительства</a>
+                                    <div><small>go.devexpress.com</small></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+
+                    <div class="block corporate_blog">
+                        <div class="title">Блог на Хабрахабре</div>
+                        <div class="posts_list">
+                            <div class="post_item">
+                                <a href="https://habrahabr.ru/company/devexpress/blog/278823/" class="post_name">Захвати и визуализируй! Или гистограмма с микрофона средствами Web Audio API</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/company/devexpress/blog/278823/#comments" class="count count_icon">8</a>
+                            </div>
+                            <div class="post_item">
+                                <a href="https://habrahabr.ru/company/devexpress/blog/274275/" class="post_name">Релиз компонентов DevExpress .NET, HTML5/JS и VCL v2015.2</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/company/devexpress/blog/274275/#comments" class="count count_icon">10</a>
+                            </div>
+                            <div class="post_item">
+                                <a href="https://habrahabr.ru/company/devexpress/blog/274193/" class="post_name">Рисуем вместе. Портрет пользователя ИЕ 8 анфас</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/company/devexpress/blog/274193/#comments" class="count count_icon">128</a>
+                            </div>
+                            <div class="post_item">
+                                <a href="https://habrahabr.ru/company/devexpress/blog/271749/" class="post_name">DotNext — Конференция по .NET-технологиям, Москва, 11 декабря</a>&nbsp;&nbsp;
+                            </div>
+                            <div class="post_item">
+                                <a href="https://habrahabr.ru/company/devexpress/blog/271331/" class="post_name">Динамическое создание Windows и Web CRUD-интерфейсов и не только для бизнес приложений с XAF + Entity Framework. Часть 1</a>&nbsp;&nbsp;
+                            </div>
+                            <div class="post_item">
+                                <a href="https://habrahabr.ru/company/devexpress/blog/270205/" class="post_name">Что написано пером, или как проверить документы в форматах MS Office</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/company/devexpress/blog/270205/#comments" class="count count_icon">2</a>
+                            </div>
+                            <div class="post_item">
+                                <a href="https://habrahabr.ru/company/devexpress/blog/269331/" class="post_name">SVG-иконки – много и со стилем</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/company/devexpress/blog/269331/#comments" class="count count_icon">30</a>
+                            </div>
+                            <div class="post_item">
+                                <a href="https://habrahabr.ru/company/devexpress/blog/264039/" class="post_name">Бесплатный грид контрол для Xamarin от DevExpress</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/company/devexpress/blog/264039/#comments" class="count count_icon">9</a>
+                            </div>
+                            <div class="post_item">
+                                <a href="https://habrahabr.ru/company/devexpress/blog/263645/" class="post_name">Особенности разработки под Xamarin.Forms</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/company/devexpress/blog/263645/#comments" class="count count_icon">6</a>
+                            </div>
+                            <div class="post_item">
+                                <a href="https://habrahabr.ru/company/devexpress/blog/261879/" class="post_name">Может ли веб-репортинг не уступать десктопному или немного о DevExpress ASP Reporting 15.1</a>&nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+
+            <div class="column-wrapper column-wrapper_bottom column-wrapper_bordered">
+                <div class="content_left">
+
+
+                    <div class="live-broadcast live-broadcast_feed">
+                        <h2 class="live-broadcast__title live-broadcast__title_feed">Интересные публикации</h2>
+
+                        <div class="dropdown dropdown_broadcast">
+                            <button type="button" class="btn btn_outline_grey btn_large icon_cog dropdown-toggle" data-toggle="dropdown">
+                            </button>
+                            <div class="dropdown-container">
+                                <ul class="n-dropdown-menu n-dropdown-menu_feed" id="filter">
+                                    <li class="n-dropdown-menu__item">
+                                        <label class="checkbox checkbox_custom">
+                                            <input type="checkbox" class="checkbox__input" name="habrahabr" checked="">
+                                            <span class="checkbox__label">Хабрахабр</span>
+                                        </label>
+                                    </li>
+                                    <li class="n-dropdown-menu__item">
+                                        <label class="checkbox checkbox_custom">
+                                            <input type="checkbox" class="checkbox__input" name="geektimes" checked="">
+                                            <span class="checkbox__label">Гиктаймс</span>
+                                        </label>
+                                    </li>
+                                    <li class="n-dropdown-menu__item">
+                                        <label class="checkbox checkbox_custom">
+                                            <input type="checkbox" class="checkbox__input" name="megamozg" checked="">
+                                            <span class="checkbox__label">Мегамозг</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="live-broadcast__content">
+                            <ul class="content-list content-list_feed" id="list">
+                                <li class="content-list__item content-list__item_habrahabr" data-type="habrahabr">
+                                    <a href="https://habrahabr.ru/post/278823/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Захвати и визуализируй! Или гистограмма с микрофона средствами Web Audio API</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/post/278823/#comments" class="content-list__item-counter icon_comments">8</a>
+                                </li>
+                                <li class="content-list__item content-list__item_habrahabr" data-type="habrahabr">
+                                    <a href="https://habrahabr.ru/post/278825/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Спойлер: Вставка SVG иконок одним единственным способом</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/post/278825/#comments" class="content-list__item-counter icon_comments">13</a>
+                                </li>
+                                <li class="content-list__item content-list__item_habrahabr" data-type="habrahabr">
+                                    <a href="https://habrahabr.ru/post/278699/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">QA: Conference. Рассказываем про доклады</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/post/278699/#comments" class="content-list__item-counter icon_comments">0</a>
+                                </li>
+                                <li class="content-list__item content-list__item_habrahabr" data-type="habrahabr">
+                                    <a href="https://habrahabr.ru/post/278673/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Долгая история про локализацию даты без года в PHP</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/post/278673/#comments" class="content-list__item-counter icon_comments">6</a>
+                                </li>
+                                <li class="content-list__item content-list__item_megamozg" data-type="megamozg">
+                                    <a href="https://megamozg.ru/post/24570/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Куда идти учиться писать хорошие тексты: Курсы российских экспертов</a>&nbsp;&nbsp;<a href="https://megamozg.ru/post/24570/#comments" class="content-list__item-counter icon_comments">3</a>
+                                </li>
+                                <li class="content-list__item content-list__item_habrahabr" data-type="habrahabr">
+                                    <a href="https://habrahabr.ru/post/278809/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">OSSIM — пользуемся комплексной Open Source системой управления безопасностью</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/post/278809/#comments" class="content-list__item-counter icon_comments">1</a>
+                                </li>
+                                <li class="content-list__item content-list__item_habrahabr" data-type="habrahabr">
+                                    <a href="https://habrahabr.ru/post/278803/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Приглашаю на чемпионат по программированию</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/post/278803/#comments" class="content-list__item-counter icon_comments">0</a>
+                                </li>
+                                <li class="content-list__item content-list__item_habrahabr" data-type="habrahabr">
+                                    <a href="https://habrahabr.ru/post/278793/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Нужна ли замена JSON? По следам статьи про KTV</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/post/278793/#comments" class="content-list__item-counter icon_comments">10</a>
+                                </li>
+                                <li class="content-list__item content-list__item_habrahabr" data-type="habrahabr">
+                                    <a href="https://habrahabr.ru/post/277121/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Привязка ресурсов в Microsoft DirectX 12. Вопросы производительности</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/post/277121/#comments" class="content-list__item-counter icon_comments">0</a>
+                                </li>
+                                <li class="content-list__item content-list__item_habrahabr" data-type="habrahabr">
+                                    <a href="https://habrahabr.ru/post/278575/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Суперскалярный стековый процессор: скрещиваем ужа и ежа</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/post/278575/#comments" class="content-list__item-counter icon_comments">4</a>
+                                </li>
+                                <li class="content-list__item content-list__item_habrahabr hidden" data-type="habrahabr">
+                                    <a href="https://habrahabr.ru/post/278125/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Автоматизация бизнес процессов в CRM. Сравнение подходов</a>&nbsp;&nbsp;<a href="https://habrahabr.ru/post/278125/#comments" class="content-list__item-counter icon_comments">3</a>
+                                </li>
+                                <li class="content-list__item content-list__item_megamozg hidden" data-type="megamozg">
+                                    <a href="https://megamozg.ru/post/24564/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Инвестиции в виртуальную и дополненную реальность превысили $1,1 млрд за первые два месяца 2016 года</a>&nbsp;&nbsp;<a href="https://megamozg.ru/post/24564/#comments" class="content-list__item-counter icon_comments">0</a>
+                                </li>
+                                <li class="content-list__item content-list__item_megamozg hidden" data-type="megamozg">
+                                    <a href="https://megamozg.ru/post/24556/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Элисон Мур займет должность CRO в SoundCloud в рамках внедрения платной подписки</a>&nbsp;&nbsp;<a href="https://megamozg.ru/post/24556/#comments" class="content-list__item-counter icon_comments">2</a>
+                                </li>
+                                <li class="content-list__item content-list__item_megamozg hidden" data-type="megamozg">
+                                    <a href="https://megamozg.ru/post/24554/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Лед тронулся: Вирджиния стала первым штатом, в котором легализован фэнтези-спорт</a>&nbsp;&nbsp;<a href="https://megamozg.ru/post/24554/#comments" class="content-list__item-counter icon_comments">1</a>
+                                </li>
+                                <li class="content-list__item content-list__item_megamozg hidden" data-type="megamozg">
+                                    <a href="https://megamozg.ru/post/24552/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Восстание машин: управление через блокчейн (DASH)</a>&nbsp;&nbsp;<a href="https://megamozg.ru/post/24552/#comments" class="content-list__item-counter icon_comments">5</a>
+                                </li>
+                                <li class="content-list__item content-list__item_megamozg hidden" data-type="megamozg">
+                                    <a href="https://megamozg.ru/post/24550/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Дочерняя компания Alibaba — Ant Financial, может быть оценена в $60 миллиардов после очередного раунда финансирования</a>&nbsp;&nbsp;<a href="https://megamozg.ru/post/24550/#comments" class="content-list__item-counter icon_comments">0</a>
+                                </li>
+                                <li class="content-list__item content-list__item_megamozg hidden" data-type="megamozg">
+                                    <a href="https://megamozg.ru/post/24548/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Разработчики ждут возвращения Google Play на китайский рынок</a>&nbsp;&nbsp;<a href="https://megamozg.ru/post/24548/#comments" class="content-list__item-counter icon_comments">0</a>
+                                </li>
+                                <li class="content-list__item content-list__item_megamozg hidden" data-type="megamozg">
+                                    <a href="https://megamozg.ru/post/24546/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Как работают профессионалы. Евгения Арестова, генеральный директор ЦОД «Омский»</a>&nbsp;&nbsp;<a href="https://megamozg.ru/post/24546/#comments" class="content-list__item-counter icon_comments">2</a>
+                                </li>
+                                <li class="content-list__item content-list__item_megamozg hidden" data-type="megamozg">
+                                    <a href="https://megamozg.ru/post/24542/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Apple вернёт покупателям электронных книг $400 миллионов</a>&nbsp;&nbsp;<a href="https://megamozg.ru/post/24542/#comments" class="content-list__item-counter icon_comments">8</a>
+                                </li>
+                                <li class="content-list__item content-list__item_megamozg hidden" data-type="megamozg">
+                                    <a href="https://megamozg.ru/post/24348/" class="content-list__item-link" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'comment'); }" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Организация TEDx-ивента</a>&nbsp;&nbsp;<a href="https://megamozg.ru/post/24348/#comments" class="content-list__item-counter icon_comments">0</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <div class="clear"></div>
+
+            <div class="footer_panel">
+                <div id="footer">
+                    <dl>
+                        <dd><a href="https://habrahabr.ru/auth/login/">Войти</a></dd>
+                        <dd><a href="https://habrahabr.ru/auth/register/">Регистрация</a></dd>
+                    </dl>
+                    <dl>
+                        <dt>Разделы</dt>
+                        <dd><a href="https://habrahabr.ru/posts/top/">Публикации</a></dd>
+                        <dd><a href="https://habrahabr.ru/hubs/">Хабы</a></dd>
+                        <dd><a href="https://habrahabr.ru/companies/">Компании</a></dd>
+                        <dd><a href="https://habrahabr.ru/users/">Пользователи</a></dd>
+                        <dd><a href="https://toster.ru/?_aa=press_anykey">Q&amp;A</a></dd>
+                        <dd><a href="https://habrahabr.ru/sandbox/">Песочница</a></dd>
+
+                    </dl>
+                    <dl>
+                        <dt>Инфо</dt>
+                        <dd><a href="/info/about/">О сайте</a></dd>
+                        <dd><a href="/info/help/rules/">Правила</a></dd>
+                        <dd><a href="/info/help/">Помощь</a></dd>
+                        <dd><a href="/info/agreement/">Соглашение</a></dd>
+                    </dl>
+                    <dl>
+                        <dt>Услуги</dt>
+                        <dd><a href="https://special.habrahabr.ru/advertising/">Реклама</a></dd>
+                        <dd><a href="https://special.habrahabr.ru/">Спецпроекты</a></dd>
+                        <dd><a href="https://special.habrahabr.ru/corporate/">Тарифы</a></dd>
+                        <dd><a href="https://special.habrahabr.ru/content/">Контент</a></dd>
+                        <dd><a href="https://special.habrahabr.ru/workshops/">Вебинары</a></dd>
+                    </dl>
+
+                    <dl>
+                        <dt>Разное</dt>
+                        <dd><a href="/apps/">Приложения</a></dd>
+                        <dd><a href="https://special.habrahabr.ru/microsoft/mobile/" target="_blank">Тест-драйв</a></dd>
+                        <dd><a href="https://special.habrahabr.ru/hello_startup/bizspark/" target="_blank">Помощь стартапам</a></dd>
+                        <dd><a href="https://special.habrahabr.ru/#hr">Работа в IT</a></dd>
+                    </dl>
+                    <div class="copyright">
+
+                        <div class="about">
+                            <a href="https://tmtm.ru/">© TM</a>
+
+                            <br><br>
+                            <a href="https://habrahabr.ru/feedback/">Служба поддержки</a><br><br>
+                            <a href="https://m.habrahabr.ru/post/278823/?mobile=yes">Мобильная версия</a><br><br>
+
+
+                            <div class="social_accounts">
+                                <a href="https://twitter.com/habrahabr" class="tw"></a>
+                                <a href="https://www.facebook.com/habrahabr.ru" class="fb"></a>
+                                <a href="https://vk.com/habr" class="vk"></a>
+                                <!-- <a href="" class="gp"></a> //-->
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<script src="js/jquery.js"></script>
-<script src="js/index.js"></script>
-</body>
-</html>
+
+
+<script type="text/javascript" src="//habracdn.net/habr/javascripts/1457521131/libs/jquery.cookie.js"></script>
+<script type="text/javascript">
+    $(document).ready( function(){
+        window.tmidLogin = function(){ return false; };
+        if( $.cookie('tmid_no_check') == undefined ) {
+            var expire = new Date();
+            expire.setMinutes(expire.getMinutes() + 10 );
+            $.cookie('tmid_no_check', 1, { expires: expire } );
+            $.getScript("https://id.tmtm.ru/checklogin/", function(){
+                if( window.tmidLogin() ) {
+
+                    var href = $('#login').attr('href');
+
+                    if( href !== undefined ) {
+                        window.location.href = href;
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    // global vars
+    var g_base_url = 'habrahabr.ru';
+    var g_show_xpanel = false;
+    var g_base_fullurl = 'https://habrahabr.ru/';
+    var g_is_guest = false;
+</script>
+
+<script type="text/javascript" src="//habracdn.net/habr/javascripts/1457521131/assets/shortcuts.js"></script>
+
+<script type="text/javascript" src="//habracdn.net/habr/javascripts/1457521131/assets/global_footer_main.js"></script>
+
+<script type="text/javascript" src="https://habrahabr.ru/viewcount/post/278823/"></script>
+
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                if (typeof (_yaparams) != 'undefined') {
+                    w.yaCounter24049213 = new Ya.Metrika({id:24049213,
+                        webvisor:true,
+                        clickmap:true,
+                        trackLinks:true,
+                        accurateTrackBounce:true,
+                        params:_yaparams});
+                } else {
+                    w.yaCounter24049213 = new Ya.Metrika({id:24049213,
+                        webvisor:true,
+                        clickmap:true,
+                        trackLinks:true,
+                        accurateTrackBounce:true});
+                }
+
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript>&lt;div&gt;&lt;img src="//mc.yandex.ru/watch/24049213" style="position:absolute; left:-9999px;" alt="" /&gt;&lt;/div&gt;</noscript>
+<!-- /Yandex.Metrika counter -->
+
+<script src="js/jquery-1.12.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/index.js"></script></body></html>
+
+
+
+<!-- Хабр не резиновый! -->
+
+
+<div id="AutocompleteContainter_aa89c" style="position: absolute; z-index: 9999; top: 0px; left: 0px;"><div class="autocomplete-w1"><div class="autocomplete" id="Autocomplete_aa89c" style="display: none; width: 300px; max-height: 400px;"></div></div></div><div id="AutocompleteContainter_11a1e" style="position: absolute; z-index: 9999; top: 2px; left: 0px;"><div class="autocomplete-w1"><div class="autocomplete" id="Autocomplete_11a1e" style="display: none; width: 300px; max-height: 400px;"></div></div></div></body></html>
